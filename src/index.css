@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #efe9e2;
+  font-family: 'Inter', -apple-system, system-ui, sans-serif;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 48px 24px;
+}
