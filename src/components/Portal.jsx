@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { TODAY } from '../data';
+import { useEffect, useState } from 'react';
 import { INK, ACCENT } from '../styles';
+import { themeFor } from '../theme';
+import { getLeads, getAppointments, getNotifications, getContact } from '../api';
 import LeadsTab from './LeadsTab';
 import LeadDetail from './LeadDetail';
 import ContactTab from './ContactTab';
@@ -9,14 +10,64 @@ import ApptDetail from './ApptDetail';
 import NotificationsTab from './NotificationsTab';
 import BottomNav from './BottomNav';
 
-export default function Portal({ client, onLogout }) {
+export default function Portal({ session, onLogout }) {
   const [tab, setTabState] = useState('leads');
   const [calView, setCalView] = useState('month');
   const [selectedApptId, setSelectedApptId] = useState(null);
   const [selectedLeadId, setSelectedLeadId] = useState(null);
   const [leadFilter, setLeadFilter] = useState('All');
   const [weekSelectedIso, setWeekSelectedIso] = useState(null);
-  const [leads, setLeads] = useState(client.leads);
+
+  const [status, setStatus] = useState('loading'); // loading | ready | not-configured | error
+  const [errorMessage, setErrorMessage] = useState('');
+  const [leadsData, setLeadsData] = useState({ stages: [], leads: [] });
+  const [appointments, setAppointments] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [contact, setContact] = useState(null);
+
+  const theme = themeFor(session.accountId);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      setStatus('loading');
+      try {
+        const [leadsRes, apptsRes, notifsRes, contactRes] = await Promise.all([
+          getLeads(session.token),
+          getAppointments(session.token),
+          getNotifications(session.token),
+          getContact(session.token),
+        ]);
+        if (cancelled) return;
+
+        if (!leadsRes.configured) {
+          setStatus('not-configured');
+          return;
+        }
+
+        setLeadsData({ stages: leadsRes.stages, leads: leadsRes.leads });
+        setAppointments(apptsRes.appointments || []);
+        setNotifications(notifsRes.notifications || []);
+        setContact(contactRes.contact || null);
+        setStatus('ready');
+      } catch (err) {
+        if (cancelled) return;
+        if (err.unauthorized) {
+          onLogout();
+          return;
+        }
+        setErrorMessage(err.message || 'Something went wrong.');
+        setStatus('error');
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session.token]);
 
   function setTab(t) {
     setTabState(t);
@@ -24,16 +75,13 @@ export default function Portal({ client, onLogout }) {
     setSelectedLeadId(null);
   }
 
-  function setLeadStatus(id, status) {
-    setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, status } : l)));
-  }
-
-  const hasUnread = client.notifications.some((n) => n.unread);
-  const selectedLead = leads.find((l) => l.id === selectedLeadId);
-  const selectedAppt = client.appointments.find((a) => a.id === selectedApptId);
+  const hasUnread = notifications.some((n) => n.unread);
+  const selectedLead = leadsData.leads.find((l) => l.id === selectedLeadId);
+  const selectedAppt = appointments.find((a) => a.id === selectedApptId);
 
   return (
     <div
+      data-theme={theme.dataTheme}
       style={{
         width: 402,
         maxWidth: '100%',
@@ -45,7 +93,8 @@ export default function Portal({ client, onLogout }) {
         borderRadius: 40,
         overflow: 'hidden',
         position: 'relative',
-        boxShadow: '0 30px 60px -20px rgba(15,23,42,0.35), 0 0 0 1px rgba(15,23,42,0.06)',
+        boxShadow: '0 30px 60px -20px rgb(var(--ink-rgb) / 0.35), 0 0 0 1px rgb(var(--ink-rgb) / 0.06)',
+        fontFamily: 'var(--font)',
       }}
     >
       <div
@@ -59,8 +108,10 @@ export default function Portal({ client, onLogout }) {
         }}
       >
         <div style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
-          <div style={{ fontSize: 17, fontWeight: 800, color: '#fff', letterSpacing: '0.02em' }}>KGB MARKETING</div>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 1 }}>Client Portal</div>
+          <div style={{ fontSize: 17, fontWeight: 800, color: '#fff', letterSpacing: '0.02em' }}>
+            {session.accountName.toUpperCase()}
+          </div>
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 1 }}>CRM Dashboard</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           <div
@@ -70,34 +121,66 @@ export default function Portal({ client, onLogout }) {
             Sign out
           </div>
           <div style={{ width: 36, height: 36, borderRadius: 10, background: ACCENT, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, letterSpacing: '0.01em', flexShrink: 0 }}>
-            KGB
+            {theme.badgeText}
           </div>
         </div>
       </div>
 
       <div style={{ flex: 1, overflowY: 'auto' }}>
-        {tab === 'leads' && (
-          <LeadsTab leads={leads} filter={leadFilter} onSetFilter={setLeadFilter} onSelectLead={setSelectedLeadId} />
+        {status === 'loading' && (
+          <div style={{ padding: 40, textAlign: 'center', color: 'rgb(var(--ink-rgb) / 0.5)', fontSize: 14 }}>
+            Loading your data…
+          </div>
         )}
-        {tab === 'contact' && <ContactTab contact={client.contact} />}
-        {tab === 'calendar' && (
-          <CalendarTab
-            appointments={client.appointments}
-            today={TODAY}
-            calView={calView}
-            weekSelectedIso={weekSelectedIso}
-            onSetCalView={setCalView}
-            onSetWeekSelected={setWeekSelectedIso}
-            onSelectAppt={setSelectedApptId}
-          />
+
+        {status === 'not-configured' && (
+          <div style={{ padding: 40, textAlign: 'center', color: 'rgb(var(--ink-rgb) / 0.5)', fontSize: 14, lineHeight: 1.6 }}>
+            This account isn't connected to GoHighLevel yet.
+            <br />
+            Add its Location ID and API token to finish setup.
+          </div>
         )}
-        {tab === 'notifications' && <NotificationsTab notifications={client.notifications} />}
+
+        {status === 'error' && (
+          <div style={{ padding: 40, textAlign: 'center', color: 'rgb(var(--ink-rgb) / 0.5)', fontSize: 14, lineHeight: 1.6 }}>
+            Couldn't load your data.
+            <br />
+            {errorMessage}
+          </div>
+        )}
+
+        {status === 'ready' && (
+          <>
+            {tab === 'leads' && (
+              <LeadsTab
+                leads={leadsData.leads}
+                stages={leadsData.stages}
+                filter={leadFilter}
+                onSetFilter={setLeadFilter}
+                onSelectLead={setSelectedLeadId}
+              />
+            )}
+            {tab === 'contact' && <ContactTab contact={contact} />}
+            {tab === 'calendar' && (
+              <CalendarTab
+                appointments={appointments}
+                today={new Date()}
+                calView={calView}
+                weekSelectedIso={weekSelectedIso}
+                onSetCalView={setCalView}
+                onSetWeekSelected={setWeekSelectedIso}
+                onSelectAppt={setSelectedApptId}
+              />
+            )}
+            {tab === 'notifications' && <NotificationsTab notifications={notifications} />}
+          </>
+        )}
       </div>
 
       <BottomNav tab={tab} onSetTab={setTab} hasUnread={hasUnread} />
 
       {selectedLead && (
-        <LeadDetail lead={selectedLead} onClose={() => setSelectedLeadId(null)} onSetStatus={setLeadStatus} />
+        <LeadDetail lead={selectedLead} stages={leadsData.stages} onClose={() => setSelectedLeadId(null)} />
       )}
 
       {selectedAppt && <ApptDetail appt={selectedAppt} onClose={() => setSelectedApptId(null)} />}

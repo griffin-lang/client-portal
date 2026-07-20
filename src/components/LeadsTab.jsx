@@ -1,11 +1,13 @@
-import { LEAD_STATUSES, LEAD_STATUS_STYLE, fmtMoney } from '../data';
-import { eyebrow, pageTitle, summaryText, card, emptyState, badge, pill, INK, ACCENT } from '../styles';
+import { fmtMoney } from '../data';
+import { eyebrow, pageTitle, summaryText, card, emptyState, badge, pill, stageStyle, INK, ACCENT } from '../styles';
 
-const filters = ['All', ...LEAD_STATUSES];
-
-export default function LeadsTab({ leads, filter, onSetFilter, onSelectLead }) {
-  const filteredLeads = filter === 'All' ? leads : leads.filter((l) => l.status === filter);
+export default function LeadsTab({ leads, stages, filter, onSetFilter, onSelectLead }) {
+  const filteredLeads = filter === 'All' ? leads : leads.filter((l) => l.statusId === filter);
   const totalPipeline = leads.reduce((sum, l) => sum + l.value, 0);
+  const stageIndex = Object.fromEntries(stages.map((s, i) => [s.id, i]));
+  const stageName = Object.fromEntries(stages.map((s) => [s.id, s.name]));
+
+  const filters = [{ id: 'All', name: 'All' }, ...stages];
 
   return (
     <div style={{ padding: '16px 20px 20px' }}>
@@ -17,18 +19,18 @@ export default function LeadsTab({ leads, filter, onSetFilter, onSelectLead }) {
 
       <div style={{ display: 'flex', gap: 8, overflowX: 'auto', marginBottom: 18, paddingBottom: 2 }}>
         {filters.map((f) => {
-          const active = f === filter;
+          const active = f.id === filter;
           return (
             <div
-              key={f}
-              onClick={() => onSetFilter(f)}
+              key={f.id}
+              onClick={() => onSetFilter(f.id)}
               style={{
                 ...pill,
-                background: active ? ACCENT : 'rgba(57,95,217,0.08)',
-                color: active ? '#fff' : 'rgba(15,23,42,0.55)',
+                background: active ? ACCENT : 'rgb(var(--accent-rgb) / 0.08)',
+                color: active ? '#fff' : 'rgb(var(--ink-rgb) / 0.55)',
               }}
             >
-              {f}
+              {f.name}
             </div>
           );
         })}
@@ -36,16 +38,16 @@ export default function LeadsTab({ leads, filter, onSetFilter, onSelectLead }) {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {filteredLeads.map((lead) => {
-          const s = LEAD_STATUS_STYLE[lead.status] || LEAD_STATUS_STYLE.New;
+          const s = stageStyle(stageIndex[lead.statusId] ?? 0);
           return (
             <div key={lead.id} onClick={() => onSelectLead(lead.id)} style={card}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6, gap: 10 }}>
                 <span style={{ fontSize: 15, fontWeight: 700, color: INK }}>{lead.name}</span>
-                <span style={{ ...badge, background: s.bg, color: s.color }}>{lead.status}</span>
+                <span style={{ ...badge, background: s.bg, color: s.color }}>{stageName[lead.statusId] || 'Unknown'}</span>
               </div>
-              <div style={{ fontSize: 13.5, color: 'rgba(15,23,42,0.55)', marginBottom: 8 }}>{lead.company}</div>
+              <div style={{ fontSize: 13.5, color: 'rgb(var(--ink-rgb) / 0.55)', marginBottom: 8 }}>{lead.company}</div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 12.5, color: 'rgba(15,23,42,0.4)' }}>
+                <span style={{ fontSize: 12.5, color: 'rgb(var(--ink-rgb) / 0.4)' }}>
                   {lead.source} · {lead.dateAdded}
                 </span>
                 <span style={{ fontSize: 14, fontWeight: 700, color: ACCENT }}>{fmtMoney(lead.value)}</span>

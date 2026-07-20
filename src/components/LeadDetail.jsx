@@ -1,12 +1,14 @@
-import { LEAD_STATUSES, LEAD_STATUS_STYLE, fmtMoney } from '../data';
+import { fmtMoney } from '../data';
 import { PhoneIcon, EmailIcon, SourceIcon, ValueIcon, BackIcon } from '../Icons';
 import {
   INK, ACCENT, sectionLabel, detailCard, detailRow, detailRowLast,
-  rowIcon, rowLabel, rowValue, badge, pill,
+  rowIcon, rowLabel, rowValue, badge, pill, stageStyle,
 } from '../styles';
 
-export default function LeadDetail({ lead, onClose, onSetStatus }) {
-  const s = LEAD_STATUS_STYLE[lead.status] || LEAD_STATUS_STYLE.New;
+export default function LeadDetail({ lead, stages, onClose }) {
+  const stageIndex = Object.fromEntries(stages.map((s, i) => [s.id, i]));
+  const stageName = Object.fromEntries(stages.map((s) => [s.id, s.name]));
+  const s = stageStyle(stageIndex[lead.statusId] ?? 0);
 
   return (
     <div style={{ position: 'absolute', inset: 0, background: '#FAFAFA', zIndex: 200, display: 'flex', flexDirection: 'column' }}>
@@ -19,9 +21,9 @@ export default function LeadDetail({ lead, onClose, onSetStatus }) {
             <BackIcon /> Back
           </div>
 
-          <span style={{ ...badge, background: s.bg, color: s.color }}>{lead.status}</span>
+          <span style={{ ...badge, background: s.bg, color: s.color }}>{stageName[lead.statusId] || 'Unknown'}</span>
           <div style={{ fontSize: 25, fontWeight: 800, color: INK, letterSpacing: '-0.01em', margin: '12px 0 4px' }}>{lead.name}</div>
-          <div style={{ fontSize: 14.5, color: 'rgba(15,23,42,0.5)', marginBottom: 20 }}>{lead.company}</div>
+          <div style={{ fontSize: 14.5, color: 'rgb(var(--ink-rgb) / 0.5)', marginBottom: 20 }}>{lead.company}</div>
 
           <div style={detailCard}>
             <div style={detailRow}>
@@ -54,30 +56,31 @@ export default function LeadDetail({ lead, onClose, onSetStatus }) {
             </div>
           </div>
 
-          <div style={sectionLabel}>Update Stage</div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
-            {LEAD_STATUSES.map((status) => {
-              const active = status === lead.status;
-              const st = LEAD_STATUS_STYLE[status];
+          <div style={sectionLabel}>Stage</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 4 }}>
+            {stages.map((stage, i) => {
+              const active = stage.id === lead.statusId;
+              const st = stageStyle(i);
               return (
                 <div
-                  key={status}
-                  onClick={() => onSetStatus(lead.id, status)}
+                  key={stage.id}
                   style={{
                     ...pill,
-                    background: active ? st.color : 'rgba(15,23,42,0.06)',
-                    color: active ? '#fff' : 'rgba(15,23,42,0.5)',
+                    cursor: 'default',
+                    background: active ? st.color : 'rgb(var(--ink-rgb) / 0.06)',
+                    color: active ? '#fff' : 'rgb(var(--ink-rgb) / 0.5)',
                   }}
                 >
-                  {status}
+                  {stage.name}
                 </div>
               );
             })}
           </div>
+          <div style={{ fontSize: 12, color: 'rgb(var(--ink-rgb) / 0.4)', marginBottom: 16 }}>Managed in GoHighLevel</div>
 
           <div style={sectionLabel}>Notes</div>
-          <div style={{ background: '#fff', borderRadius: 18, border: '1px solid rgba(15,23,42,0.07)', padding: 16, fontSize: 14, lineHeight: 1.5, color: 'rgba(15,23,42,0.65)' }}>
-            {lead.notes}
+          <div style={{ background: '#fff', borderRadius: 18, border: '1px solid rgb(var(--ink-rgb) / 0.07)', padding: 16, fontSize: 14, lineHeight: 1.5, color: 'rgb(var(--ink-rgb) / 0.65)' }}>
+            {lead.notes || 'No notes.'}
           </div>
         </div>
       </div>

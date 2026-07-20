@@ -1,21 +1,24 @@
 import { useState } from 'react';
 import { INK, ACCENT } from '../styles';
+import { login } from '../api';
 
-export default function Login({ clients, onLogin }) {
+export default function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    const match = clients.find(
-      (c) => c.username.toLowerCase() === username.trim().toLowerCase() && c.password === password
-    );
-    if (match) {
-      setError('');
-      onLogin(match.id);
-    } else {
-      setError('Incorrect username or password.');
+    setLoading(true);
+    setError('');
+    try {
+      const session = await login(username, password);
+      onLogin(session);
+    } catch (err) {
+      setError(err.message || 'Incorrect username or password.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -23,7 +26,7 @@ export default function Login({ clients, onLogin }) {
     width: '100%',
     padding: '13px 14px',
     borderRadius: 12,
-    border: '1px solid rgba(15,23,42,0.12)',
+    border: '1px solid rgb(var(--ink-rgb) / 0.12)',
     background: '#fff',
     fontSize: 15,
     color: INK,
@@ -41,7 +44,7 @@ export default function Login({ clients, onLogin }) {
         background: '#FAFAFA',
         borderRadius: 40,
         overflow: 'hidden',
-        boxShadow: '0 30px 60px -20px rgba(15,23,42,0.35), 0 0 0 1px rgba(15,23,42,0.06)',
+        boxShadow: '0 30px 60px -20px rgb(var(--ink-rgb) / 0.35), 0 0 0 1px rgb(var(--ink-rgb) / 0.06)',
         padding: '56px 32px 40px',
       }}
     >
@@ -56,16 +59,15 @@ export default function Login({ clients, onLogin }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: 18,
+            fontSize: 22,
             fontWeight: 800,
-            letterSpacing: '0.01em',
             marginBottom: 16,
           }}
         >
-          KGB
+          ⌂
         </div>
-        <div style={{ fontSize: 17, fontWeight: 800, color: INK, letterSpacing: '0.02em' }}>KGB MARKETING</div>
-        <div style={{ fontSize: 13, color: 'rgba(15,23,42,0.45)', marginTop: 2 }}>Client Portal</div>
+        <div style={{ fontSize: 17, fontWeight: 800, color: INK, letterSpacing: '0.02em' }}>BUSINESS PORTAL</div>
+        <div style={{ fontSize: 13, color: 'rgb(var(--ink-rgb) / 0.45)', marginTop: 2 }}>Sign in to your account</div>
       </div>
 
       <div style={{ fontSize: 22, fontWeight: 800, color: INK, letterSpacing: '-0.01em', marginBottom: 20, textAlign: 'center' }}>
@@ -74,7 +76,7 @@ export default function Login({ clients, onLogin }) {
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(15,23,42,0.5)', marginBottom: 6 }}>Username</div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: 'rgb(var(--ink-rgb) / 0.5)', marginBottom: 6 }}>Username</div>
           <input
             style={inputStyle}
             value={username}
@@ -84,7 +86,7 @@ export default function Login({ clients, onLogin }) {
           />
         </div>
         <div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(15,23,42,0.5)', marginBottom: 6 }}>Password</div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: 'rgb(var(--ink-rgb) / 0.5)', marginBottom: 6 }}>Password</div>
           <input
             style={inputStyle}
             type="password"
@@ -99,6 +101,7 @@ export default function Login({ clients, onLogin }) {
 
         <button
           type="submit"
+          disabled={loading}
           style={{
             marginTop: 8,
             width: '100%',
@@ -110,28 +113,13 @@ export default function Login({ clients, onLogin }) {
             fontSize: 15,
             fontWeight: 700,
             fontFamily: 'inherit',
-            cursor: 'pointer',
+            cursor: loading ? 'default' : 'pointer',
+            opacity: loading ? 0.7 : 1,
           }}
         >
-          Sign In
+          {loading ? 'Signing in…' : 'Sign In'}
         </button>
       </form>
-
-      <div
-        style={{
-          marginTop: 28,
-          paddingTop: 20,
-          borderTop: '1px solid rgba(15,23,42,0.07)',
-          fontSize: 12.5,
-          color: 'rgba(15,23,42,0.45)',
-          lineHeight: 1.6,
-        }}
-      >
-        <div style={{ fontWeight: 600, color: 'rgba(15,23,42,0.55)', marginBottom: 4 }}>Demo accounts (password: portal123)</div>
-        {clients.map((c) => (
-          <div key={c.id}>{c.username} — {c.contact.company}</div>
-        ))}
-      </div>
     </div>
   );
 }

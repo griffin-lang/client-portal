@@ -1,28 +1,40 @@
 import { useState } from 'react';
-import { CLIENTS } from './clients';
 import Login from './components/Login';
 import Portal from './components/Portal';
 
-const SESSION_KEY = 'client-portal-session';
+const SESSION_KEY = 'business-portal-session';
+
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const session = JSON.parse(raw);
+    if (!session.expiresAt || session.expiresAt < Date.now()) {
+      localStorage.removeItem(SESSION_KEY);
+      return null;
+    }
+    return session;
+  } catch {
+    return null;
+  }
+}
 
 export default function App() {
-  const [sessionId, setSessionId] = useState(() => localStorage.getItem(SESSION_KEY));
+  const [session, setSession] = useState(loadSession);
 
-  function handleLogin(clientId) {
-    localStorage.setItem(SESSION_KEY, clientId);
-    setSessionId(clientId);
+  function handleLogin(newSession) {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(newSession));
+    setSession(newSession);
   }
 
   function handleLogout() {
     localStorage.removeItem(SESSION_KEY);
-    setSessionId(null);
+    setSession(null);
   }
 
-  const client = CLIENTS.find((c) => c.id === sessionId);
-
-  if (!client) {
-    return <Login clients={CLIENTS} onLogin={handleLogin} />;
+  if (!session) {
+    return <Login onLogin={handleLogin} />;
   }
 
-  return <Portal key={client.id} client={client} onLogout={handleLogout} />;
+  return <Portal key={session.accountId} session={session} onLogout={handleLogout} />;
 }

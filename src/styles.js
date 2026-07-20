@@ -1,14 +1,14 @@
-export const INK = '#0F172A';
-export const ACCENT = '#395FD9';
-export const ACCENT_SOFT = 'rgba(57,95,217,0.08)';
+export const INK = 'var(--ink)';
+export const ACCENT = 'var(--accent)';
+export const ACCENT_SOFT = 'rgb(var(--accent-rgb) / 0.08)';
 export const CARD_BG = '#fff';
-export const CARD_BORDER = '1px solid rgba(15,23,42,0.07)';
+export const CARD_BORDER = '1px solid rgb(var(--ink-rgb) / 0.07)';
 
 export const eyebrow = {
   fontSize: 13,
   fontWeight: 600,
   letterSpacing: '0.06em',
-  color: 'rgba(15,23,42,0.45)',
+  color: 'rgb(var(--ink-rgb) / 0.45)',
   textTransform: 'uppercase',
   marginBottom: 6,
 };
@@ -23,7 +23,7 @@ export const pageTitle = {
 
 export const summaryText = {
   fontSize: 13.5,
-  color: 'rgba(15,23,42,0.5)',
+  color: 'rgb(var(--ink-rgb) / 0.5)',
   marginBottom: 18,
 };
 
@@ -31,7 +31,7 @@ export const sectionLabel = {
   fontSize: 12.5,
   fontWeight: 600,
   letterSpacing: '0.05em',
-  color: 'rgba(15,23,42,0.4)',
+  color: 'rgb(var(--ink-rgb) / 0.4)',
   textTransform: 'uppercase',
   margin: '18px 4px 8px',
 };
@@ -80,7 +80,7 @@ export const rowIcon = {
 
 export const rowLabel = {
   fontSize: 12,
-  color: 'rgba(15,23,42,0.45)',
+  color: 'rgb(var(--ink-rgb) / 0.45)',
   marginBottom: 1,
 };
 
@@ -93,7 +93,7 @@ export const rowValue = {
 export const emptyState = {
   textAlign: 'center',
   padding: '32px 20px',
-  color: 'rgba(15,23,42,0.4)',
+  color: 'rgb(var(--ink-rgb) / 0.4)',
   fontSize: 14,
 };
 
@@ -106,6 +106,16 @@ export const badge = {
   textTransform: 'uppercase',
   flexShrink: 0,
 };
+
+const STAGE_PALETTE = [
+  { bg: 'rgb(var(--accent-rgb) / 0.1)', color: 'var(--accent)' },
+  { bg: 'rgb(var(--blue-rgb) / 0.12)', color: 'var(--blue)' },
+  { bg: 'rgb(var(--ink-rgb) / 0.08)', color: 'rgb(var(--ink-rgb) / 0.6)' },
+];
+
+export function stageStyle(index) {
+  return STAGE_PALETTE[index % STAGE_PALETTE.length];
+}
 
 export const pill = {
   padding: '7px 14px',

@@ -2,7 +2,7 @@ import { LeadsIcon, ContactIcon, CalendarIcon, NotificationsIcon } from '../Icon
 import { ACCENT } from '../styles';
 
 const ON = ACCENT;
-const OFF = 'rgba(15,23,42,0.35)';
+const OFF = 'rgb(var(--ink-rgb) / 0.35)';
 
 const items = [
   { key: 'leads', label: 'Leads', Icon: LeadsIcon },
@@ -13,7 +13,7 @@ const items = [
 
 export default function BottomNav({ tab, onSetTab, hasUnread }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: '10px 12px 16px', background: 'rgba(250,250,250,0.92)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(15,23,42,0.07)', flexShrink: 0 }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: '10px 12px 16px', background: 'rgba(250,250,250,0.92)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgb(var(--ink-rgb) / 0.07)', flexShrink: 0 }}>
       {items.map(({ key, label, Icon }) => {
         const active = tab === key;
         const color = active ? ON : OFF;
