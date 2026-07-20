@@ -43,6 +43,10 @@ export function getCalendarEvents(token, { locationId, calendarId, startTime, en
   return ghlGet(token, '/calendars/events', { locationId, calendarId, startTime, endTime });
 }
 
+export function getCalendars(token, { locationId }) {
+  return ghlGet(token, '/calendars/', { locationId });
+}
+
 export function searchConversations(token, { locationId, limit = 20 }) {
   return ghlGet(token, '/conversations/search', { locationId, limit });
 }
@@ -66,4 +70,5 @@ export const RESOURCES = {
   }),
   conversations: (token, account) => searchConversations(token, { locationId: account.ghlLocationId }),
   location: (token, account) => getLocation(token, { locationId: account.ghlLocationId }),
+  calendars: (token, account) => getCalendars(token, { locationId: account.ghlLocationId }),
 };

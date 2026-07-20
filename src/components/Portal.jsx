@@ -107,8 +107,8 @@ export default function Portal({ session, onLogout }) {
           background: INK,
         }}
       >
-        <div style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
-          <div style={{ fontSize: 17, fontWeight: 800, color: '#fff', letterSpacing: '0.02em' }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 17, fontWeight: 800, color: '#fff', letterSpacing: '0.02em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {session.accountName.toUpperCase()}
           </div>
           <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 1 }}>CRM Dashboard</div>
