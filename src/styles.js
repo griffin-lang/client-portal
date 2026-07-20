@@ -1,14 +1,14 @@
-export const INK = '#241C16';
-export const ACCENT = '#C1571F';
-export const ACCENT_SOFT = '#F3E6DA';
+export const INK = '#0F172A';
+export const ACCENT = '#395FD9';
+export const ACCENT_SOFT = 'rgba(57,95,217,0.08)';
 export const CARD_BG = '#fff';
-export const CARD_BORDER = '1px solid rgba(36,28,22,0.07)';
+export const CARD_BORDER = '1px solid rgba(15,23,42,0.07)';
 
 export const eyebrow = {
   fontSize: 13,
   fontWeight: 600,
   letterSpacing: '0.06em',
-  color: 'rgba(36,28,22,0.45)',
+  color: 'rgba(15,23,42,0.45)',
   textTransform: 'uppercase',
   marginBottom: 6,
 };
@@ -23,7 +23,7 @@ export const pageTitle = {
 
 export const summaryText = {
   fontSize: 13.5,
-  color: 'rgba(36,28,22,0.5)',
+  color: 'rgba(15,23,42,0.5)',
   marginBottom: 18,
 };
 
@@ -31,7 +31,7 @@ export const sectionLabel = {
   fontSize: 12.5,
   fontWeight: 600,
   letterSpacing: '0.05em',
-  color: 'rgba(36,28,22,0.4)',
+  color: 'rgba(15,23,42,0.4)',
   textTransform: 'uppercase',
   margin: '18px 4px 8px',
 };
@@ -80,7 +80,7 @@ export const rowIcon = {
 
 export const rowLabel = {
   fontSize: 12,
-  color: 'rgba(36,28,22,0.45)',
+  color: 'rgba(15,23,42,0.45)',
   marginBottom: 1,
 };
 
@@ -93,7 +93,7 @@ export const rowValue = {
 export const emptyState = {
   textAlign: 'center',
   padding: '32px 20px',
-  color: 'rgba(36,28,22,0.4)',
+  color: 'rgba(15,23,42,0.4)',
   fontSize: 14,
 };
 

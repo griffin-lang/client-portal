@@ -1,8 +1,8 @@
-export const ACCENT = '#C1571F';
-export const ACCENT_SOFT = '#F3E6DA';
-export const BLUE = 'oklch(0.55 0.13 200)';
-export const BLUE_SOFT = 'oklch(0.55 0.13 200 / 0.15)';
-export const INK = '#241C16';
+export const ACCENT = '#395FD9';
+export const ACCENT_SOFT = 'rgba(57,95,217,0.08)';
+export const BLUE = '#155EEF';
+export const BLUE_SOFT = 'rgba(21,94,239,0.12)';
+export const INK = '#0F172A';
 
 export const ACCENTS = {
   'Strategy Call': ACCENT,
@@ -14,8 +14,8 @@ export const ACCENTS = {
 
 export const STATUS_STYLE = {
   confirmed: { bg: ACCENT_SOFT, color: ACCENT },
-  pending: { bg: 'rgba(36,28,22,0.07)', color: 'rgba(36,28,22,0.55)' },
-  completed: { bg: 'rgba(36,28,22,0.06)', color: 'rgba(36,28,22,0.4)' },
+  pending: { bg: 'rgba(15,23,42,0.07)', color: 'rgba(15,23,42,0.55)' },
+  completed: { bg: 'rgba(15,23,42,0.06)', color: 'rgba(15,23,42,0.4)' },
 };
 
 export const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -31,7 +31,7 @@ export const LEAD_STATUS_STYLE = {
   Qualified: { bg: ACCENT_SOFT, color: ACCENT },
   'Proposal Sent': { bg: BLUE_SOFT, color: BLUE },
   Won: { bg: INK, color: '#fff' },
-  Lost: { bg: 'rgba(36,28,22,0.06)', color: 'rgba(36,28,22,0.35)' },
+  Lost: { bg: 'rgba(15,23,42,0.06)', color: 'rgba(15,23,42,0.35)' },
 };
 
 export function fmtMoney(n) {

@@ -15,7 +15,7 @@ function ApptRow({ appt, onSelect }) {
       <div style={{ width: 4, alignSelf: 'stretch', borderRadius: 4, background: accentColor }} />
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: 15, fontWeight: 600, color: INK }}>{appt.title}</div>
-        <div style={{ fontSize: 13, color: 'rgba(36,28,22,0.5)', marginTop: 2 }}>{appt.time} · {appt.location}</div>
+        <div style={{ fontSize: 13, color: 'rgba(15,23,42,0.5)', marginTop: 2 }}>{appt.time} · {appt.location}</div>
       </div>
       <span style={{ ...badge, background: b.bg, color: b.color }}>{appt.status}</span>
     </div>
@@ -31,7 +31,7 @@ export default function CalendarTab({ appointments, today, calView, weekSelected
   });
 
   const pillActive = { background: ACCENT, color: '#fff' };
-  const pillInactive = { background: 'transparent', color: 'rgba(36,28,22,0.5)' };
+  const pillInactive = { background: 'transparent', color: 'rgba(15,23,42,0.5)' };
 
   // Month grid
   const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -49,7 +49,7 @@ export default function CalendarTab({ appointments, today, calView, weekSelected
     monthCells.push({
       key: iso, day: d.getDate(), hasAppt: !!dayAppts, dotColor: accent,
       isToday,
-      numColor: isToday ? '#fff' : (inMonth ? INK : 'rgba(36,28,22,0.25)'),
+      numColor: isToday ? '#fff' : (inMonth ? INK : 'rgba(15,23,42,0.25)'),
       numWeight: isToday ? 700 : 500,
       onClick: dayAppts ? () => onSelectAppt(dayAppts[0].id) : undefined,
     });
@@ -90,7 +90,7 @@ export default function CalendarTab({ appointments, today, calView, weekSelected
       <div style={eyebrow}>Appointments</div>
       <div style={{ ...pageTitle, marginBottom: 18 }}>Calendar</div>
 
-      <div style={{ display: 'flex', background: '#F3E6DA', borderRadius: 100, padding: 4, marginBottom: 20 }}>
+      <div style={{ display: 'flex', background: 'rgba(57,95,217,0.08)', borderRadius: 100, padding: 4, marginBottom: 20 }}>
         {['month', 'week', 'list'].map((v) => (
           <div
             key={v}
@@ -109,10 +109,10 @@ export default function CalendarTab({ appointments, today, calView, weekSelected
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: '4px 2px', marginBottom: 6 }}>
             {weekdayLabels.map((wd, i) => (
-              <div key={i} style={{ textAlign: 'center', fontSize: 11, fontWeight: 600, color: 'rgba(36,28,22,0.35)', paddingBottom: 4 }}>{wd}</div>
+              <div key={i} style={{ textAlign: 'center', fontSize: 11, fontWeight: 600, color: 'rgba(15,23,42,0.35)', paddingBottom: 4 }}>{wd}</div>
             ))}
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: '4px 2px', background: '#fff', borderRadius: 18, border: '1px solid rgba(36,28,22,0.07)', padding: '10px 6px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: '4px 2px', background: '#fff', borderRadius: 18, border: '1px solid rgba(15,23,42,0.07)', padding: '10px 6px' }}>
             {monthCells.map((cell) => (
               <div
                 key={cell.key}
@@ -139,7 +139,7 @@ export default function CalendarTab({ appointments, today, calView, weekSelected
                 onClick={() => onSetWeekSelected(cell.iso)}
                 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, padding: '8px 0', borderRadius: 14, cursor: 'pointer', background: cell.isSelected ? ACCENT : 'transparent' }}
               >
-                <span style={{ fontSize: 10.5, fontWeight: 600, color: cell.isSelected ? 'rgba(255,255,255,0.75)' : 'rgba(36,28,22,0.4)' }}>{cell.wd}</span>
+                <span style={{ fontSize: 10.5, fontWeight: 600, color: cell.isSelected ? 'rgba(255,255,255,0.75)' : 'rgba(15,23,42,0.4)' }}>{cell.wd}</span>
                 <span style={{ fontSize: 16, fontWeight: 700, color: cell.isSelected ? '#fff' : INK }}>{cell.day}</span>
                 <span style={{ width: 4, height: 4, borderRadius: '50%', background: cell.hasAppt ? (cell.isSelected ? '#fff' : ACCENT) : 'transparent' }} />
               </div>

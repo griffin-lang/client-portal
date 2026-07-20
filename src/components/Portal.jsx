@@ -41,11 +41,11 @@ export default function Portal({ client, onLogout }) {
         maxHeight: '92vh',
         display: 'flex',
         flexDirection: 'column',
-        background: '#FBF6F1',
+        background: '#FAFAFA',
         borderRadius: 40,
         overflow: 'hidden',
         position: 'relative',
-        boxShadow: '0 30px 60px -20px rgba(36,28,22,0.35), 0 0 0 1px rgba(36,28,22,0.06)',
+        boxShadow: '0 30px 60px -20px rgba(15,23,42,0.35), 0 0 0 1px rgba(15,23,42,0.06)',
       }}
     >
       <div
@@ -55,17 +55,17 @@ export default function Portal({ client, onLogout }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          borderBottom: '1px solid rgba(36,28,22,0.07)',
+          background: INK,
         }}
       >
         <div style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
-          <div style={{ fontSize: 17, fontWeight: 800, color: INK, letterSpacing: '0.02em' }}>KGB MARKETING</div>
-          <div style={{ fontSize: 12, color: 'rgba(36,28,22,0.45)', marginTop: 1 }}>Client Portal</div>
+          <div style={{ fontSize: 17, fontWeight: 800, color: '#fff', letterSpacing: '0.02em' }}>KGB MARKETING</div>
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 1 }}>Client Portal</div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
           <div
             onClick={onLogout}
-            style={{ fontSize: 12, fontWeight: 600, color: 'rgba(36,28,22,0.4)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+            style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.5)', cursor: 'pointer', whiteSpace: 'nowrap' }}
           >
             Sign out
           </div>

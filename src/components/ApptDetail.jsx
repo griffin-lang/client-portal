@@ -8,7 +8,7 @@ export default function ApptDetail({ appt, onClose }) {
   const fullDate = `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 
   return (
-    <div style={{ position: 'absolute', inset: 0, background: '#FBF6F1', zIndex: 200, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ position: 'absolute', inset: 0, background: '#FAFAFA', zIndex: 200, display: 'flex', flexDirection: 'column' }}>
       <div style={{ paddingTop: 24, flex: 1, overflowY: 'auto' }}>
         <div style={{ padding: '8px 20px 24px' }}>
           <div
@@ -20,7 +20,7 @@ export default function ApptDetail({ appt, onClose }) {
 
           <span style={{ ...badge, background: b.bg, color: b.color }}>{appt.status}</span>
           <div style={{ fontSize: 25, fontWeight: 800, color: INK, letterSpacing: '-0.01em', margin: '12px 0 4px' }}>{appt.title}</div>
-          <div style={{ fontSize: 14.5, color: 'rgba(36,28,22,0.5)', marginBottom: 20 }}>{appt.type}</div>
+          <div style={{ fontSize: 14.5, color: 'rgba(15,23,42,0.5)', marginBottom: 20 }}>{appt.type}</div>
 
           <div style={detailCard}>
             <div style={detailRow}>
@@ -40,7 +40,7 @@ export default function ApptDetail({ appt, onClose }) {
           </div>
 
           <div style={sectionLabel}>Attendees</div>
-          <div style={{ background: '#fff', borderRadius: 18, border: '1px solid rgba(36,28,22,0.07)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 16 }}>
+          <div style={{ background: '#fff', borderRadius: 18, border: '1px solid rgba(15,23,42,0.07)', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 16 }}>
             {appt.attendees.map((a) => (
               <div key={a.name} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div style={{ width: 32, height: 32, borderRadius: '50%', background: a.color, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, flexShrink: 0 }}>
@@ -52,12 +52,12 @@ export default function ApptDetail({ appt, onClose }) {
           </div>
 
           <div style={sectionLabel}>Notes</div>
-          <div style={{ background: '#fff', borderRadius: 18, border: '1px solid rgba(36,28,22,0.07)', padding: 16, fontSize: 14, lineHeight: 1.5, color: 'rgba(36,28,22,0.65)' }}>
+          <div style={{ background: '#fff', borderRadius: 18, border: '1px solid rgba(15,23,42,0.07)', padding: 16, fontSize: 14, lineHeight: 1.5, color: 'rgba(15,23,42,0.65)' }}>
             {appt.notes}
           </div>
         </div>
       </div>
-      <div style={{ padding: '14px 20px 20px', display: 'flex', gap: 10, background: 'rgba(251,246,241,0.92)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(36,28,22,0.07)' }}>
+      <div style={{ padding: '14px 20px 20px', display: 'flex', gap: 10, background: 'rgba(250,250,250,0.92)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(15,23,42,0.07)' }}>
         <div style={{ flex: 1, textAlign: 'center', padding: '13px 0', borderRadius: 100, background: ACCENT_SOFT, color: ACCENT, fontSize: 14.5, fontWeight: 700, cursor: 'pointer' }}>
           Reschedule
         </div>

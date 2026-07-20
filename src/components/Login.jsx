@@ -23,7 +23,7 @@ export default function Login({ clients, onLogin }) {
     width: '100%',
     padding: '13px 14px',
     borderRadius: 12,
-    border: '1px solid rgba(36,28,22,0.12)',
+    border: '1px solid rgba(15,23,42,0.12)',
     background: '#fff',
     fontSize: 15,
     color: INK,
@@ -38,10 +38,10 @@ export default function Login({ clients, onLogin }) {
         maxWidth: '100%',
         display: 'flex',
         flexDirection: 'column',
-        background: '#FBF6F1',
+        background: '#FAFAFA',
         borderRadius: 40,
         overflow: 'hidden',
-        boxShadow: '0 30px 60px -20px rgba(36,28,22,0.35), 0 0 0 1px rgba(36,28,22,0.06)',
+        boxShadow: '0 30px 60px -20px rgba(15,23,42,0.35), 0 0 0 1px rgba(15,23,42,0.06)',
         padding: '56px 32px 40px',
       }}
     >
@@ -65,7 +65,7 @@ export default function Login({ clients, onLogin }) {
           KGB
         </div>
         <div style={{ fontSize: 17, fontWeight: 800, color: INK, letterSpacing: '0.02em' }}>KGB MARKETING</div>
-        <div style={{ fontSize: 13, color: 'rgba(36,28,22,0.45)', marginTop: 2 }}>Client Portal</div>
+        <div style={{ fontSize: 13, color: 'rgba(15,23,42,0.45)', marginTop: 2 }}>Client Portal</div>
       </div>
 
       <div style={{ fontSize: 22, fontWeight: 800, color: INK, letterSpacing: '-0.01em', marginBottom: 20, textAlign: 'center' }}>
@@ -74,7 +74,7 @@ export default function Login({ clients, onLogin }) {
 
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(36,28,22,0.5)', marginBottom: 6 }}>Username</div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(15,23,42,0.5)', marginBottom: 6 }}>Username</div>
           <input
             style={inputStyle}
             value={username}
@@ -84,7 +84,7 @@ export default function Login({ clients, onLogin }) {
           />
         </div>
         <div>
-          <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(36,28,22,0.5)', marginBottom: 6 }}>Password</div>
+          <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(15,23,42,0.5)', marginBottom: 6 }}>Password</div>
           <input
             style={inputStyle}
             type="password"
@@ -121,13 +121,13 @@ export default function Login({ clients, onLogin }) {
         style={{
           marginTop: 28,
           paddingTop: 20,
-          borderTop: '1px solid rgba(36,28,22,0.07)',
+          borderTop: '1px solid rgba(15,23,42,0.07)',
           fontSize: 12.5,
-          color: 'rgba(36,28,22,0.45)',
+          color: 'rgba(15,23,42,0.45)',
           lineHeight: 1.6,
         }}
       >
-        <div style={{ fontWeight: 600, color: 'rgba(36,28,22,0.55)', marginBottom: 4 }}>Demo accounts (password: portal123)</div>
+        <div style={{ fontWeight: 600, color: 'rgba(15,23,42,0.55)', marginBottom: 4 }}>Demo accounts (password: portal123)</div>
         {clients.map((c) => (
           <div key={c.id}>{c.username} — {c.contact.company}</div>
         ))}

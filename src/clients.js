@@ -34,9 +34,9 @@ export const CLIENTS = [
     ],
     notifications: [
       { id: 1, title: 'Upcoming appointment', body: 'Creative Concept Review starts in 2 days', time: 'Today, 9:00 AM', unread: true, glyph: '🕑', iconBg: ACCENT_SOFT },
-      { id: 2, title: 'Appointment confirmed', body: 'Quarterly Business Review confirmed for Jul 24', time: 'Yesterday', unread: true, glyph: '✓', iconBg: 'rgba(36,28,22,0.06)' },
+      { id: 2, title: 'Appointment confirmed', body: 'Quarterly Business Review confirmed for Jul 24', time: 'Yesterday', unread: true, glyph: '✓', iconBg: 'rgba(15,23,42,0.06)' },
       { id: 3, title: 'Message from Priya Shah', body: 'Sent over the updated brand deck ahead of Friday', time: 'Jul 18', unread: false, glyph: '✉', iconBg: ACCENT_SOFT },
-      { id: 4, title: 'Invoice ready', body: 'Your monthly invoice is ready to view', time: 'Jul 15', unread: false, glyph: '$', iconBg: 'rgba(36,28,22,0.06)' },
+      { id: 4, title: 'Invoice ready', body: 'Your monthly invoice is ready to view', time: 'Jul 15', unread: false, glyph: '$', iconBg: 'rgba(15,23,42,0.06)' },
       { id: 5, title: 'Appointment rescheduled', body: 'Paid Media Kickoff was moved to Jul 29', time: 'Jul 12', unread: false, glyph: '↻', iconBg: ACCENT_SOFT },
     ],
   },
@@ -71,9 +71,9 @@ export const CLIENTS = [
     ],
     notifications: [
       { id: 1, title: 'Upcoming appointment', body: 'Landing Page Creative Review starts tomorrow', time: 'Today, 8:00 AM', unread: true, glyph: '🕑', iconBg: ACCENT_SOFT },
-      { id: 2, title: 'New lead assigned', body: 'Grace Kim marked as Won — nice work!', time: 'Jun 30', unread: false, glyph: '✓', iconBg: 'rgba(36,28,22,0.06)' },
+      { id: 2, title: 'New lead assigned', body: 'Grace Kim marked as Won — nice work!', time: 'Jun 30', unread: false, glyph: '✓', iconBg: 'rgba(15,23,42,0.06)' },
       { id: 3, title: 'Message from Priya Shah', body: 'Shared the updated landing page concepts', time: 'Jul 17', unread: false, glyph: '✉', iconBg: ACCENT_SOFT },
-      { id: 4, title: 'Invoice ready', body: 'Your monthly invoice is ready to view', time: 'Jul 15', unread: false, glyph: '$', iconBg: 'rgba(36,28,22,0.06)' },
+      { id: 4, title: 'Invoice ready', body: 'Your monthly invoice is ready to view', time: 'Jul 15', unread: false, glyph: '$', iconBg: 'rgba(15,23,42,0.06)' },
     ],
   },
   {
@@ -106,7 +106,7 @@ export const CLIENTS = [
     notifications: [
       { id: 1, title: 'Upcoming appointment', body: 'Content Calendar Review starts in 3 days', time: 'Today, 9:15 AM', unread: true, glyph: '🕑', iconBg: ACCENT_SOFT },
       { id: 2, title: 'Message from Priya Shah', body: 'Sent over three reel concepts for next week', time: 'Jul 18', unread: true, glyph: '✉', iconBg: ACCENT_SOFT },
-      { id: 3, title: 'Invoice ready', body: 'Your monthly invoice is ready to view', time: 'Jul 15', unread: false, glyph: '$', iconBg: 'rgba(36,28,22,0.06)' },
+      { id: 3, title: 'Invoice ready', body: 'Your monthly invoice is ready to view', time: 'Jul 15', unread: false, glyph: '$', iconBg: 'rgba(15,23,42,0.06)' },
     ],
   },
 ];

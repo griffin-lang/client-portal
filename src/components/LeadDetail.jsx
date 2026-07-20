@@ -9,7 +9,7 @@ export default function LeadDetail({ lead, onClose, onSetStatus }) {
   const s = LEAD_STATUS_STYLE[lead.status] || LEAD_STATUS_STYLE.New;
 
   return (
-    <div style={{ position: 'absolute', inset: 0, background: '#FBF6F1', zIndex: 200, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ position: 'absolute', inset: 0, background: '#FAFAFA', zIndex: 200, display: 'flex', flexDirection: 'column' }}>
       <div style={{ paddingTop: 24, flex: 1, overflowY: 'auto' }}>
         <div style={{ padding: '8px 20px 24px' }}>
           <div
@@ -21,7 +21,7 @@ export default function LeadDetail({ lead, onClose, onSetStatus }) {
 
           <span style={{ ...badge, background: s.bg, color: s.color }}>{lead.status}</span>
           <div style={{ fontSize: 25, fontWeight: 800, color: INK, letterSpacing: '-0.01em', margin: '12px 0 4px' }}>{lead.name}</div>
-          <div style={{ fontSize: 14.5, color: 'rgba(36,28,22,0.5)', marginBottom: 20 }}>{lead.company}</div>
+          <div style={{ fontSize: 14.5, color: 'rgba(15,23,42,0.5)', marginBottom: 20 }}>{lead.company}</div>
 
           <div style={detailCard}>
             <div style={detailRow}>
@@ -65,8 +65,8 @@ export default function LeadDetail({ lead, onClose, onSetStatus }) {
                   onClick={() => onSetStatus(lead.id, status)}
                   style={{
                     ...pill,
-                    background: active ? st.color : 'rgba(36,28,22,0.06)',
-                    color: active ? '#fff' : 'rgba(36,28,22,0.5)',
+                    background: active ? st.color : 'rgba(15,23,42,0.06)',
+                    color: active ? '#fff' : 'rgba(15,23,42,0.5)',
                   }}
                 >
                   {status}
@@ -76,7 +76,7 @@ export default function LeadDetail({ lead, onClose, onSetStatus }) {
           </div>
 
           <div style={sectionLabel}>Notes</div>
-          <div style={{ background: '#fff', borderRadius: 18, border: '1px solid rgba(36,28,22,0.07)', padding: 16, fontSize: 14, lineHeight: 1.5, color: 'rgba(36,28,22,0.65)' }}>
+          <div style={{ background: '#fff', borderRadius: 18, border: '1px solid rgba(15,23,42,0.07)', padding: 16, fontSize: 14, lineHeight: 1.5, color: 'rgba(15,23,42,0.65)' }}>
             {lead.notes}
           </div>
         </div>

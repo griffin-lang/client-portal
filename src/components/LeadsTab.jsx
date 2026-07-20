@@ -24,8 +24,8 @@ export default function LeadsTab({ leads, filter, onSetFilter, onSelectLead }) {
               onClick={() => onSetFilter(f)}
               style={{
                 ...pill,
-                background: active ? ACCENT : '#F3E6DA',
-                color: active ? '#fff' : 'rgba(36,28,22,0.55)',
+                background: active ? ACCENT : 'rgba(57,95,217,0.08)',
+                color: active ? '#fff' : 'rgba(15,23,42,0.55)',
               }}
             >
               {f}
@@ -43,9 +43,9 @@ export default function LeadsTab({ leads, filter, onSetFilter, onSelectLead }) {
                 <span style={{ fontSize: 15, fontWeight: 700, color: INK }}>{lead.name}</span>
                 <span style={{ ...badge, background: s.bg, color: s.color }}>{lead.status}</span>
               </div>
-              <div style={{ fontSize: 13.5, color: 'rgba(36,28,22,0.55)', marginBottom: 8 }}>{lead.company}</div>
+              <div style={{ fontSize: 13.5, color: 'rgba(15,23,42,0.55)', marginBottom: 8 }}>{lead.company}</div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 12.5, color: 'rgba(36,28,22,0.4)' }}>
+                <span style={{ fontSize: 12.5, color: 'rgba(15,23,42,0.4)' }}>
                   {lead.source} · {lead.dateAdded}
                 </span>
                 <span style={{ fontSize: 14, fontWeight: 700, color: ACCENT }}>{fmtMoney(lead.value)}</span>
