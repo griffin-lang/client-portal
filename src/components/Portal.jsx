@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { INK, ACCENT } from '../styles';
 import { themeFor } from '../theme';
 import { getLeads, getAppointments, getNotifications, getContact } from '../api';
@@ -9,6 +9,7 @@ import CalendarTab from './CalendarTab';
 import ApptDetail from './ApptDetail';
 import NotificationsTab from './NotificationsTab';
 import BottomNav from './BottomNav';
+import { RefreshIcon } from '../Icons';
 
 export default function Portal({ session, onLogout }) {
   const [tab, setTabState] = useState('leads');
@@ -19,6 +20,7 @@ export default function Portal({ session, onLogout }) {
   const [weekSelectedIso, setWeekSelectedIso] = useState(null);
 
   const [status, setStatus] = useState('loading'); // loading | ready | not-configured | error
+  const [refreshing, setRefreshing] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [leadsData, setLeadsData] = useState({ stages: [], leads: [] });
   const [appointments, setAppointments] = useState([]);
@@ -27,11 +29,11 @@ export default function Portal({ session, onLogout }) {
 
   const theme = themeFor(session.accountId);
 
-  useEffect(() => {
-    let cancelled = false;
+  const load = useCallback(
+    async ({ isRefresh } = {}) => {
+      if (isRefresh) setRefreshing(true);
+      else setStatus('loading');
 
-    async function load() {
-      setStatus('loading');
       try {
         const [leadsRes, apptsRes, notifsRes, contactRes] = await Promise.all([
           getLeads(session.token),
@@ -39,7 +41,6 @@ export default function Portal({ session, onLogout }) {
           getNotifications(session.token),
           getContact(session.token),
         ]);
-        if (cancelled) return;
 
         if (!leadsRes.configured) {
           setStatus('not-configured');
@@ -52,20 +53,23 @@ export default function Portal({ session, onLogout }) {
         setContact(contactRes.contact || null);
         setStatus('ready');
       } catch (err) {
-        if (cancelled) return;
         if (err.unauthorized) {
           onLogout();
           return;
         }
-        setErrorMessage(err.message || 'Something went wrong.');
-        setStatus('error');
+        if (!isRefresh) {
+          setErrorMessage(err.message || 'Something went wrong.');
+          setStatus('error');
+        }
+      } finally {
+        if (isRefresh) setRefreshing(false);
       }
-    }
+    },
+    [session.token, onLogout]
+  );
 
+  useEffect(() => {
     load();
-    return () => {
-      cancelled = true;
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session.token]);
 
@@ -113,7 +117,21 @@ export default function Portal({ session, onLogout }) {
           </div>
           <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', marginTop: 1 }}>CRM Dashboard</div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
+          {status === 'ready' && (
+            <div
+              onClick={() => !refreshing && load({ isRefresh: true })}
+              title="Refresh"
+              style={{
+                display: 'flex',
+                cursor: refreshing ? 'default' : 'pointer',
+                color: 'rgba(255,255,255,0.6)',
+                animation: refreshing ? 'portal-spin 0.8s linear infinite' : 'none',
+              }}
+            >
+              <RefreshIcon />
+            </div>
+          )}
           <div
             onClick={onLogout}
             style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.5)', cursor: 'pointer', whiteSpace: 'nowrap' }}
@@ -125,6 +143,8 @@ export default function Portal({ session, onLogout }) {
           </div>
         </div>
       </div>
+
+      <style>{'@keyframes portal-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }'}</style>
 
       <div style={{ flex: 1, overflowY: 'auto' }}>
         {status === 'loading' && (
