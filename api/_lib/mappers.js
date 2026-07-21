@@ -11,6 +11,37 @@ function toYmd(value) {
   return d.toISOString().slice(0, 10);
 }
 
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function fmtShortDate(value) {
+  if (!value) return '';
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return '';
+  const now = new Date();
+  const label = `${MONTHS_SHORT[d.getMonth()]} ${d.getDate()}`;
+  return d.getFullYear() === now.getFullYear() ? label : `${label}, ${d.getFullYear()}`;
+}
+
+function fmtRelativeDate(value) {
+  if (!value) return '';
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return '';
+  const startOfDay = (dt) => new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()).getTime();
+  const diffDays = Math.round((startOfDay(new Date()) - startOfDay(d)) / 86400000);
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return 'Yesterday';
+  return fmtShortDate(value);
+}
+
+function cleanMessageBody(text) {
+  if (!text) return '';
+  return text
+    .replace(/Location Logo\s*\[[^\]]*\]/gi, '')
+    .replace(/\s*\n\s*/g, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
 export function mapPipelineStages(pipelinesResponse, pipelineId) {
   const pipelines = pipelinesResponse.pipelines || pipelinesResponse.data || [];
   const pipeline = pipelines.find((p) => p.id === pipelineId) || pipelines[0];
@@ -29,7 +60,7 @@ export function mapOpportunityToLead(opp) {
     source: opp.source || '—',
     statusId: opp.pipelineStageId,
     value: opp.monetaryValue || 0,
-    dateAdded: toYmd(opp.createdAt),
+    dateAdded: fmtShortDate(opp.createdAt),
     notes: opp.notes || '',
   };
 }
@@ -60,7 +91,7 @@ export function mapEventToAppointment(event) {
     status: APPT_STATUS_MAP[event.appointmentStatus] || 'pending',
     notes: event.notes || '',
     attendees: event.contactId
-      ? [{ name: contactName, initials: initialsFor(contactName), color: '#395FD9' }]
+      ? [{ name: contactName, initials: initialsFor(contactName), color: 'var(--accent)' }]
       : [],
   };
 }
@@ -70,11 +101,11 @@ export function mapConversationToNotification(convo) {
   return {
     id: convo.id,
     title: `Message from ${name}`,
-    body: (convo.lastMessageBody || '').slice(0, 140),
-    time: toYmd(convo.dateUpdated || convo.lastMessageDate),
+    body: cleanMessageBody(convo.lastMessageBody).slice(0, 140),
+    time: fmtRelativeDate(convo.dateUpdated || convo.lastMessageDate),
     unread: (convo.unreadCount || 0) > 0,
     glyph: '✉',
-    iconBg: 'rgba(57,95,217,0.08)',
+    iconBg: 'rgb(var(--accent-rgb) / 0.08)',
   };
 }
 
