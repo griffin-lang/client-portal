@@ -73,6 +73,11 @@ export default function Portal({ session, onLogout }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session.token]);
 
+  useEffect(() => {
+    const interval = setInterval(() => load({ isRefresh: true }), 60000);
+    return () => clearInterval(interval);
+  }, [load]);
+
   function setTab(t) {
     setTabState(t);
     setSelectedApptId(null);
